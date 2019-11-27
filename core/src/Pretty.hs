@@ -15,6 +15,7 @@ comment :: Doc ann
 comment = pretty (";;; " :: Text)
 
 prettyLispVal :: LispVal -> Doc ann
+prettyLispVal (Languge x) = pretty ("#lang " <> x)
 prettyLispVal (Comments xs) = vsep
   $ fmap (\x -> comment <> (pretty . Text.strip) x) xs
 prettyLispVal (CommentedBlock text x) =

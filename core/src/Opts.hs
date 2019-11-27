@@ -25,7 +25,7 @@ width :: Parser Int
 width = option
   auto
   (long "width"
-   <> value 80
+   <> value 40
    <> metavar "W"
    <> help "Pretty print with W columns")
 

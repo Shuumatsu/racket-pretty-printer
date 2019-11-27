@@ -73,6 +73,7 @@ parseDoubleNumber = DoubleNumber <$> double
 
 parseExpr :: Parser LispVal
 parseExpr = (parseComments
+             <|> parseLanguage
              <|> parseAtom
              <|> parseCharacter
              <|> parseString
@@ -110,8 +111,14 @@ parseComments = do
       Left expr -> CommentedBlock comments expr
       Right _   -> Comments comments
   where
-    comment = Text.strip <$> string ";;;"
+    comment = Text.strip <$> string ";"
       >> liftM2 const (Attoparsec.takeWhile (not . isEndOfLine)) endOfLine
+
+parseLanguage :: Parser LispVal
+parseLanguage = do
+  asciiCI "#lang "
+  lang <- const <$> Attoparsec.takeWhile (not . isEndOfLine) <*> endOfLine
+  return $ Languge lang
 
 parseProg :: Parser [LispVal]
 parseProg = many (const <$> parseExpr <*> many space)
