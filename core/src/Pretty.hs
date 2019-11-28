@@ -12,7 +12,7 @@ instance Pretty LispVal where
   pretty = prettyLispVal
 
 comment :: Doc ann
-comment = pretty (";;; " :: Text)
+comment = pretty ("; " :: Text)
 
 prettyLispVal :: LispVal -> Doc ann
 prettyLispVal (Languge x) = pretty ("#lang " <> x)
