@@ -7,7 +7,8 @@ import           Data.Attoparsec.Text (parseOnly, eitherResult, parse
                                      , IResult(..), endOfInput)
 import           Data.Text.Prettyprint.Doc.Render.Text (renderIO, renderStrict)
 import           Data.Text.Prettyprint.Doc (pretty, hardline, LayoutOptions(..)
-                                          , PageWidth(..), layoutSmart)
+                                          , PageWidth(..), layoutSmart
+                                          , layoutPretty)
 import qualified Data.Text as Text
 import           Data.Text (Text)
 import qualified Data.Text.IO as Text.IO
@@ -29,11 +30,12 @@ main = do
         $ AvailablePerLine (optsWidth parsedOps) (optsRibbon parsedOps)
   contents <- Text.strip <$> readContents parsedOps
   case parseOnly (parseProg <* endOfInput) contents of
-    Right exprs
-      -> let prettied = Text.intercalate "\n\n"
-               $ fmap (renderStrict . layoutSmart layoutOptions . pretty) exprs
-         in case parsedOps of
-              (Options (FileInput filepath True) _ _)
-                -> Text.IO.writeFile filepath prettied
-              _ -> Text.IO.putStrLn prettied
+    Right exprs -> let prettied = Text.intercalate "\n\n"
+                         $ fmap
+                           (renderStrict . layoutPretty layoutOptions . pretty)
+                           exprs
+                   in case parsedOps of
+                        (Options (FileInput filepath True) _ _)
+                          -> Text.IO.writeFile filepath prettied
+                        _ -> Text.IO.putStrLn prettied
     Left err    -> hPutStrLn stderr $ Text.pack err

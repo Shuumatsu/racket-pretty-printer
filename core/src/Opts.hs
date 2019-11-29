@@ -25,7 +25,7 @@ width :: Parser Int
 width = option
   auto
   (long "width"
-   <> value 40
+   <> value 160
    <> metavar "W"
    <> help "Pretty print with W columns")
 
@@ -33,7 +33,7 @@ ribbon :: Parser Double
 ribbon = option
   auto
   (long "ribbon"
-   <> value 1.0
+   <> value 0.5
    <> metavar "r"
    <> help "The fraction of the total page width that can be printed on")
 

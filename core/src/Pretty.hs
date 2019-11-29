@@ -9,10 +9,18 @@ import qualified Data.Text as Text
 import           Ast
 
 instance Pretty LispVal where
-  pretty = prettyLispVal
+  pretty = group . prettyLispVal
 
 comment :: Doc ann
 comment = pretty ("; " :: Text)
+
+values :: [LispVal] -> Doc ann
+values xs = group
+  $ if length xs > 2
+    then prettyLispVal (head xs)
+      <> softline
+      <> align (vsep (fmap prettyLispVal (tail xs)))
+    else align $ vsep (fmap prettyLispVal xs)
 
 prettyLispVal :: LispVal -> Doc ann
 prettyLispVal (Languge x) = pretty ("#lang " <> x)
@@ -30,11 +38,7 @@ prettyLispVal (DoubleNumber x) = pretty x
 prettyLispVal (ListVal [Atom "quoted", x]) = pretty '\'' <> prettyLispVal x
 prettyLispVal (ListVal ((Atom "quoted"):xs)) = pretty '\''
   <> prettyLispVal (ListVal xs)
-prettyLispVal (ListVal xs) =
-  if length xs > 1
-  then group . parens . align
-    $ prettyLispVal (head xs) <+> align (vsep (fmap prettyLispVal (tail xs)))
-  else group . parens . align $ vsep (fmap prettyLispVal xs)
-prettyLispVal (DottedList xs x) = group
-  $ parens . align
-  $ vsep (fmap prettyLispVal xs) <+> pretty '.' <+> prettyLispVal x
+prettyLispVal (ListVal xs) = parens $ values xs
+prettyLispVal (Bracket xs) = brackets $ values xs
+prettyLispVal (DottedList xs x) = parens . align
+  $ vsep (fmap prettyLispVal xs) <> softline <> pretty '.' <+> prettyLispVal x

@@ -79,14 +79,19 @@ parseExpr = (parseComments
              <|> parseString
              <|> parseQuoted
              <|> (try parseNumber <|> parseDoubleNumber)
+             <|> parseBracket
              <|> between
                (char '(' >> many space)
                (try parseDottedList <|> parseList)
                (many space >> char ')'))
+              
   <?> "parseExpr"
 
 parseList :: Parser LispVal
 parseList = ListVal <$> (parseExpr `sepBy` some space) <?> "parseList"
+
+parseBracket :: Parser LispVal
+parseBracket = Bracket <$> between (char '[' >> many space) (parseExpr `sepBy` some space) (many space >>char ']')
 
 parseDottedList :: Parser LispVal
 parseDottedList = (do

@@ -7,6 +7,7 @@ data LispVal =
   | Atom Text
   | ListVal [LispVal]
   | DottedList [LispVal] LispVal
+  | Bracket [LispVal]
   | Number Integer
   | Str Text
   | Character Char
