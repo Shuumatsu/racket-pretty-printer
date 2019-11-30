@@ -4,7 +4,7 @@
     "description": "A formatter for racket src files",
     "publisher": "Shuumatsu",
     "repository": "https://github.com/Shuumatsu/racket-pretty-printer",
-    "version": "0.1.0",
+    "version": "0.4.0",
     "engines": {
         "vscode": "^1.40.0"
     },
@@ -22,7 +22,22 @@
                 "command": "extension.racket-pretty",
                 "title": "Racket Pretty"
             }
-        ]
+        ],
+        "configuration": {
+            "title": "racket-pretty-printer",
+            "properties": {
+                "racket-pretty-printer.width": {
+                    "type": "number",
+                    "default": 160,
+                    "description": "width arg that `racket-pretty-printer` will use"
+                },
+                "racket-pretty-printer.ribbon": {
+                    "type": "number",
+                    "default": 0.5,
+                    "description": "ribbon arg that `racket-pretty-printer` will use"
+                }
+            }
+        }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",

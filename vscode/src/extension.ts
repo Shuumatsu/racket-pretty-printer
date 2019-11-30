@@ -9,6 +9,15 @@ const getFullRange = (document: vscode.TextDocument) => {
     return new vscode.Range(0, firstLine.range.start.character, document.lineCount - 1, lastLine.range.end.character)
 }
 
+const format = (text: string) => {
+    const config = vscode.workspace.getConfiguration('racket-pretty-printer')
+    const args = ['--stdin']
+    config.has('width') && args.push('--width', `${config.get('width')}`)
+    config.has('ribbon') && args.push('--ribbon', `${config.get('ribbon')}`)
+    console.log(args)
+    return spawnSync(command, args, { input: text, encoding: 'utf8' })
+}
+
 export function activate(context: vscode.ExtensionContext) {
     console.log('Congratulations, your extension "racket-pretty-printer" is now active!')
 
@@ -20,7 +29,7 @@ export function activate(context: vscode.ExtensionContext) {
 
             const { document } = activeTextEditor
             const text = document.getText()
-            const { stdout, stderr } = spawnSync(command, ['--stdin'], { input: text, encoding: 'utf8' })
+            const { stderr, stdout } = format(text)
             if (stderr) return console.log('err', stderr)
 
             const edit = new vscode.WorkspaceEdit()
@@ -40,7 +49,7 @@ export function activate(context: vscode.ExtensionContext) {
             ): vscode.ProviderResult<vscode.TextEdit[]> =>
                 new Promise((resolve, reject) => {
                     const text = document.getText()
-                    const { stdout, stderr } = spawnSync(command, ['--stdin'], { input: text, encoding: 'utf8' })
+                    const { stderr, stdout } = format(text)
                     if (stderr) return reject(stderr)
 
                     const range = getFullRange(document)

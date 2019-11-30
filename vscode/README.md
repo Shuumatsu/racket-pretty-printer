@@ -41,11 +41,16 @@ Make sure you have `racket-pretty-printer` in path.
 
 ## Extension Settings
 
-TODO...
+```
+{
+  "racket-pretty-printer.width": 160,
+  "racket-pretty-printer.ribbon": 0.5,
+}
+```
 
 ## Known Issues
 
-In very early stage, not fully compatible with `Racket` syntax yet.
+In very early stage, not fully compatible with `Racket` syntax yet. 
 
 ### For more information
 
