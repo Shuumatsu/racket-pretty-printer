@@ -45,6 +45,7 @@ extra-deps:
 - text-1.2.4.0
 - prettyprinter-1.5.1
 - optparse-applicative-0.15.1.0
+- double-conversion-2.0.2.0
 
 
 # Override default flag values for local packages and extra-deps

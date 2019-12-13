@@ -6,6 +6,7 @@ import           Data.Text.Prettyprint.Doc
 import           Data.Text.Prettyprint.Doc.Render.Text
 import           Data.Text (Text)
 import qualified Data.Text as Text
+import           Data.Double.Conversion.Text (toShortest)
 import           Ast
 
 instance Pretty LispVal where
@@ -29,12 +30,12 @@ prettyLispVal (Comments xs) = vsep
 prettyLispVal (CommentedBlock text x) =
   prettyLispVal (Comments text) <> hardline <> prettyLispVal x
 prettyLispVal (Str x) = enclose (pretty '\"') (pretty '\"') (pretty x)
-prettyLispVal (Number x) = pretty x
 prettyLispVal (Atom x) = pretty x
 prettyLispVal (Character x) = pretty x
 prettyLispVal (Boolean True) = pretty ("#t" :: Text)
 prettyLispVal (Boolean False) = pretty ("#f" :: Text)
-prettyLispVal (DoubleNumber x) = pretty x
+prettyLispVal (Number x) = pretty x
+prettyLispVal (DoubleNumber x) = pretty $ toShortest x
 prettyLispVal (ListVal [Atom "quoted", x]) = pretty '\'' <> prettyLispVal x
 prettyLispVal (ListVal ((Atom "quoted"):xs)) = pretty '\''
   <> prettyLispVal (ListVal xs)

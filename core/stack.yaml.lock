@@ -32,6 +32,13 @@ packages:
       sha256: f3baab2f89cb92de0f90cf9ac3a89f20f3b28bffd1be7b09c9e611a8c6957e61
   original:
     hackage: optparse-applicative-0.15.1.0
+- completed:
+    hackage: double-conversion-2.0.2.0@sha256:934ef2ffa06e196ab7df9e130bedee0228dc54bf879822bc2349624e1dfd38e4,3624
+    pantry-tree:
+      size: 5141
+      sha256: a74a7357fc6308444642a8ec19f90f7848a92cc95676b64af5caf5aefec8f626
+  original:
+    hackage: double-conversion-2.0.2.0
 snapshots:
 - completed:
     size: 524804

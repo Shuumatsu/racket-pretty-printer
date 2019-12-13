@@ -25,6 +25,7 @@ dependencies:
 - attoparsec 
 - text
 - optparse-applicative
+- double-conversion
 
 library:
   source-dirs: src

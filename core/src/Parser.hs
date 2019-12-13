@@ -23,7 +23,7 @@ oneOf xs = satisfy (`elem` xs) <?> "oneOf"
 noneOf :: String -> Parser Char
 noneOf xs = satisfy (`notElem` xs) <?> "noneOf"
 
-  -- all the characters which can be escaped
+-- all the characters which can be escaped
 escape :: Parser Char
 escape = (do
             d <- char '\\'
@@ -72,26 +72,30 @@ parseDoubleNumber :: Parser LispVal
 parseDoubleNumber = DoubleNumber <$> double
 
 parseExpr :: Parser LispVal
-parseExpr = (parseComments
-             <|> parseLanguage
-             <|> parseAtom
-             <|> parseCharacter
-             <|> parseString
-             <|> parseQuoted
-             <|> (try parseNumber <|> parseDoubleNumber)
-             <|> parseBracket
-             <|> between
-               (char '(' >> many space)
-               (try parseDottedList <|> parseList)
-               (many space >> char ')'))
-              
+parseExpr =
+  (parseComments
+   <|> parseLanguage
+   <|> parseAtom
+   <|> parseCharacter
+   <|> parseString
+   <|> parseQuoted
+   <|> (try parseDoubleNumber <|> parseNumber)
+   <|> parseBracket
+   <|> between
+     (char '(' >> many space)
+     (try parseDottedList <|> parseList)
+     (many space >> char ')'))
   <?> "parseExpr"
 
 parseList :: Parser LispVal
 parseList = ListVal <$> (parseExpr `sepBy` some space) <?> "parseList"
 
 parseBracket :: Parser LispVal
-parseBracket = Bracket <$> between (char '[' >> many space) (parseExpr `sepBy` some space) (many space >>char ']')
+parseBracket = Bracket
+  <$> between
+    (char '[' >> many space)
+    (parseExpr `sepBy` some space)
+    (many space >> char ']')
 
 parseDottedList :: Parser LispVal
 parseDottedList = (do
