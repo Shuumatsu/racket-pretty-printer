@@ -17,7 +17,7 @@
 #
 # resolver: ./custom-snapshot.yaml
 # resolver: https://example.com/snapshots/2018-01-01.yaml
-resolver: lts-14.16
+resolver: lts-16.11
 
 # User packages to be built.
 # Various formats can be used as shown in the example below.
@@ -29,7 +29,7 @@ resolver: lts-14.16
 #   - auto-update
 #   - wai
 packages:
-- .
+    - .
 # Dependency packages to be pulled from upstream that are not in the resolver.
 # These entries can reference officially published versions as well as
 # forks / in-progress versions pinned to a git hash. For example:
@@ -41,13 +41,11 @@ packages:
 #
 # extra-deps: []
 extra-deps:
-- attoparsec-0.13.2.3
-- text-1.2.4.0
-- prettyprinter-1.5.1
-- optparse-applicative-0.15.1.0
-- double-conversion-2.0.2.0
-
-
+    - attoparsec-0.13.2.3
+    - text-1.2.4.0
+    - prettyprinter-1.5.1
+    - optparse-applicative-0.15.1.0
+    - double-conversion-2.0.2.0
 # Override default flag values for local packages and extra-deps
 # flags: {}
 

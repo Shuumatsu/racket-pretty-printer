@@ -37,8 +37,9 @@ prettyLispVal (Atom x) = pretty x
 prettyLispVal (Character x) = pretty x
 prettyLispVal (Boolean True) = pretty ("#t" :: Text)
 prettyLispVal (Boolean False) = pretty ("#f" :: Text)
-prettyLispVal (Number x) = pretty x
+prettyLispVal (IntNumber x) = pretty x
 prettyLispVal (DoubleNumber x) = pretty $ toShortest x
+prettyLispVal (RationalNumber x y) = pretty x <> "/" <> pretty y
 prettyLispVal (ListVal [Atom "quoted", x]) = pretty '\'' <> prettyLispVal x
 prettyLispVal (ListVal ((Atom "quoted") : xs)) =
   pretty '\''

@@ -70,11 +70,17 @@ parseAtom =
   )
     <?> "parseAtom"
 
-parseNumber :: Parser LispVal
-parseNumber = Number <$> decimal
-
 parseDoubleNumber :: Parser LispVal
 parseDoubleNumber = DoubleNumber <$> double
+
+parseRational :: Parser LispVal
+parseRational = do
+  x <- decimal
+  string "/"
+  RationalNumber x <$> decimal
+
+parseIntNumber :: Parser LispVal
+parseIntNumber = IntNumber <$> decimal
 
 parseExpr :: Parser LispVal
 parseExpr =
@@ -84,7 +90,7 @@ parseExpr =
       <|> parseCharacter
       <|> parseString
       <|> parseQuoted
-      <|> (try parseDoubleNumber <|> parseNumber)
+      <|> (try parseDoubleNumber <|> try parseRational <|> parseIntNumber)
       <|> parseBracket
       <|> between
         (char '(' >> many space)
